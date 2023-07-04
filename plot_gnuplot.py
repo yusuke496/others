@@ -1,0 +1,27 @@
+import Gnuplot
+import time
+
+gplot = Gnuplot.Gnuplot()
+filename=input("input file name:")
+filename="filename="+"'"+filename+"'"
+file0=open('filename.txt', 'w')
+file0.write(filename)
+file0.close()
+gplot("set term wxt")
+gplot("set sample 1000")
+gplot("set xrange [-1500:1500]")
+gplot("set yrange [-3:3]")
+gplot("a0=50")
+gplot("b0=60000")
+gplot("x0=0.5")
+gplot("a1=200")
+gplot("b1=1000")
+gplot("x1=0.5")
+gplot("y0=0.01")
+gplot("LP(x)=b0*(a0*x/((a0**2+(x-x0)**2)**2))")
+gplot("GP(x)=b1*((x-x1)/a1**2)*exp(-(x-x1)**2/(2*a1**2))")
+gplot("F(x)=LP(x)+GP(x)+y0")
+gplot("load 'filename.txt'")
+gplot("fit F(x) filename u 1:2  via a0, b0, x0, a1, b1, x1, y0")
+gplot("plot filename u 1:2 w l lc 'black', F(x) lc 'red'")
+time.sleep(10)
